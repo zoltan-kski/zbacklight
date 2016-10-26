@@ -9,6 +9,7 @@
 #define MAX_BRIGHTNESS "/sys/class/backlight/intel_backlight/max_brightness"
 #define TARGET_BRIGHTNESS "/sys/class/backlight/intel_backlight/brightness"
 
+#define RATIO(current, max) (current * 1.0 / max * 100.0)
 
 typedef enum
 {
@@ -118,8 +119,7 @@ void set_value_file(char const * path, int value)
 
 int get_cmd(struct br_info const * const info)
 {
-    printf("Current brightness: %0.02f%%\n",
-           info->current * 1.0 / info->max * 100.0);
+    printf("Current brightness: %0.02f%%\n", RATIO(info->current, info->max));
     return EXIT_SUCCESS;
 }
 
@@ -143,7 +143,7 @@ int set_cmd(struct br_info const * const info, float value)
 
 int inc_cmd(struct br_info const * const info, float value)
 {
-    float ratio = info->current * 1.0 / info->max * 100.0;
+    float ratio = RATIO(info->current, info->max);
 
     set_cmd(info, ratio + value);
     return EXIT_SUCCESS;
@@ -151,7 +151,7 @@ int inc_cmd(struct br_info const * const info, float value)
 
 int dec_cmd(struct br_info const * const info, float value)
 {
-    float ratio = info->current * 1.0 / info->max * 100.0;
+    float ratio = RATIO(info->current, info->max);
 
     set_cmd(info, ratio - value);
     return EXIT_SUCCESS;
