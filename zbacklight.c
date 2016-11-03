@@ -36,13 +36,7 @@ struct options parse_options(int ac, char * const * const av)
 {
     struct options options;
 
-    if (ac < 2)
-    {
-        fprintf(stderr, "Missing argument.\n");
-        exit(1);
-    }
-
-    if (strcmp(av[1], "-get") == 0)
+    if (ac < 2 || strcmp(av[1], "-get") == 0)
         options.operation = Get;
     else
     {
